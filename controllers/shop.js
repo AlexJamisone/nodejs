@@ -2,39 +2,49 @@ const Product = require('../models/product')
 const Cart = require('../models/cart')
 
 exports.getProduct = (req, res, next) => {
-    Product.fetchAll((product) => {
-        res.render('shop/product-list', {
-            prod: product,
-            pageTitle: 'All Products',
-            path: '/products',
-            hasProduct: product.length > 0,
-            activeShop: true,
-            productCSS: true,
+    Product.fetchAll()
+        .then(([rows, fildData]) => {
+            res.render('shop/product-list', {
+                prod: rows,
+                pageTitle: 'All Products',
+                path: '/products',
+                hasProduct: rows.length > 0,
+                activeShop: true,
+                productCSS: true,
+            });
+        })
+        .catch(err => {
+            console.log(err)
         });
-    });
     
 }
 
 exports.getProducts = (req, res, next) => {
-   const prodId = req.params.productId
-   Product.findById(prodId, product => {
-       res.render('shop/product-details', {
-           product: product,
-           pageTitle: product.title,
-           path: '/products'
-       })
-   });
+    const prodId = req.params.productId
+    Product.findById(prodId)
+        .then(([product]) => {
+            res.render('shop/product-details', {
+                product: product[0],
+                pageTitle: product.title,
+                path: '/products'
+            })
+        })
+        .catch(err => console.log(err))
    
 };
 
 exports.getIndex = (req, res, next) => {
-    Product.fetchAll((product) => {
-        res.render('shop/index', {
-            prod: product,
-            pageTitle: 'Shop',
-            path: '/',
+    Product.fetchAll()
+        .then(([rows, fildData]) => {
+            res.render('shop/index', {
+                prod: rows,
+                pageTitle: 'Shop',
+                path: '/',
+            });
+        })
+        .catch(err => {
+            console.log(err)
         });
-    });
 };
 
 exports.getCart = (req, res, next) => {
