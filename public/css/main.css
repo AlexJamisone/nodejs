@@ -21,15 +21,13 @@ form {
 
 .centered {
   text-align: center;
-  width: 100%;
-  height: auto;
 }
 
-.img {
+.image {
   height: 20rem;
 }
 
-.img img {
+.image img {
   height: 100%;
 }
 
@@ -199,12 +197,22 @@ form {
   background: white;
   border-radius: 3px;
   cursor: pointer;
-  transition: background-color .2s linear;
 }
 
 .btn:hover,
 .btn:active {
   background-color: #00695c;
+  color: white;
+}
+
+.btn.danger {
+  color: red;
+  border-color: red;
+}
+
+.btn.danger:hover,
+.btn.danger:active {
+  background: red;
   color: white;
 }
 
