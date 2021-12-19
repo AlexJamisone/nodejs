@@ -22,7 +22,6 @@ router.post('/create-order', shopControllers.postOrder)
 
 router.get('/orders', shopControllers.getOrders)
 
-router.get('/checkout', shopControllers.getCheckout)
 
 
 
