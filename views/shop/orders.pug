@@ -2,13 +2,14 @@ extends ../layouts/main-layout.pug
 
 block content
     main 
-        if undfOrder
+        if orders.length <= 0
             h1 Nothing here!
         else 
             ul 
                 each order in orders 
                     li 
-                        h1 # #{orders.id}
+                        h1 # #{order.id}
                     ul
-                        each product in orders
+                        each product in order.products
                             li #{product.title} (#{product.orderItem.quantity})
+                            
