@@ -1,12 +1,14 @@
 const mongodb = require('mongodb');
-const getDb = require('../util/database');
+const getDb = require('../util/database').getDb;
 
 const ObjectId = mongodb.ObjectId;
 
 class User {
-	constructor(username, email) {
+	constructor(username, email, cart, id) {
 		this.name = username;
 		this.email = email;
+		this.cart = cart; // {items: []}
+		this._id = id;
 	}
 
 	save() {
@@ -16,11 +18,36 @@ class User {
 			.insertOne(this)
 	}
 
+	addToCart(product) {
+		const cartProductIndex = this.cart.items.findIndex(cp => {
+			return cp.productId.toString() === product._id.toString()
+		});
+		let newQuantiti = 1;
+		const updateCartItems = [...this.cart.items];
+
+		if (cartProductIndex >= 0) {
+			newQuantiti = this.cart.items[cartProductIndex].quantity + 1;
+			updateCartItems[cartProductIndex].quantity = newQuantiti;
+		} else {
+			updateCartItems.push({productId: new ObjectId(product._id), quantity: newQuantiti})
+		}
+		const updateCart = {
+			items: updateCartItems
+		};
+		const db = getDb();
+		return db
+			.collection('users')
+			.updateOne(
+				{_id: new ObjectId(this._id)}, 
+				{$set: {cart: updateCart}}
+			);
+	}
+
 	static findById(userId) {
 		const db = getDb();
 		return db.collection('users')
 			.findOne({_id: new ObjectId(userId)})
-			.then(user =>{
+			.then(user => {
 				console.log(user)
 				return user;
 			})
