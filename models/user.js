@@ -24,7 +24,6 @@ class User {
 		});
 		let newQuantiti = 1;
 		const updateCartItems = [...this.cart.items];
-
 		if (cartProductIndex >= 0) {
 			newQuantiti = this.cart.items[cartProductIndex].quantity + 1;
 			updateCartItems[cartProductIndex].quantity = newQuantiti;
@@ -33,14 +32,15 @@ class User {
 		}
 		const updateCart = {
 			items: updateCartItems
-		};
+		}
 		const db = getDb();
 		return db
 			.collection('users')
 			.updateOne(
-				{_id: new ObjectId(this._id)}, 
+				{_id: new ObjectId(this._id)},
 				{$set: {cart: updateCart}}
-			);
+		);
+
 	}
 
 	static findById(userId) {
