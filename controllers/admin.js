@@ -7,7 +7,8 @@ exports.getAddProduct = (req, res, next) => {
         activeAddProduct: true,
         formsCSS: true,
         productCSS: true,
-        editing: false
+        editing: false,
+        isAutenticated: req.isLoggin
     })
 }
 
@@ -37,7 +38,9 @@ exports.postAddProduct = (req, res, next) => {
 exports.getEditProduct = (req, res, next) => {
     const editMode = req.query.edit;
     if (!editMode) {
-        res.redirect('/')
+        res.redirect('/', {
+            isAutenticated: req.isLoggin
+        })
     }
     const prodId = req.params.productId;
     Product.findById(prodId)
@@ -88,6 +91,7 @@ exports.getProducts = (req, res, next) => {
             prod: product,
             pageTitle: 'Admin Products',
             path: '/admin/products',
+            isAutenticated: req.isLoggin
         });
     })
     .catch(err => {

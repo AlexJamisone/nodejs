@@ -12,6 +12,7 @@ exports.getProduct = (req, res, next) => {
                 hasProduct: product.length > 0,
                 activeShop: true,
                 productCSS: true,
+                isAutenticated: req.isLoggin
             });
         })
         .catch(err => {
@@ -27,7 +28,8 @@ exports.getProducts = (req, res, next) => {
             res.render('shop/product-details', {
                 product: product,
                 pageTitle: product.title,
-                path: '/products'
+                path: '/products',
+                isAutenticated: req.isLoggin
             })
         })
         .catch(err => console.log(err))
@@ -41,6 +43,7 @@ exports.getIndex = (req, res, next) => {
                 prod: product,
                 pageTitle: 'Shop',
                 path: '/',
+                isAutenticated: req.isLoggin
             });
         })
         .catch(err => {
@@ -56,7 +59,8 @@ exports.getCart = (req, res, next) => {
             res.render('shop/cart', {
                 path: '/cart',
                 pageTitle: 'Yore Cart',
-                products: products
+                products: products,
+                isAutenticated: req.isLoggin
             });    
         })
         .catch(err => {
@@ -128,7 +132,8 @@ exports.getOrders = (req, res, next) => {
                 path: '/orders',
                 pageTitle: 'Your Orders',
                 orders: orders,
-                ordProd: orders.products
+                ordProd: orders.products,
+                isAutenticated: req.isLoggin
             })
         })
         .catch(err => {

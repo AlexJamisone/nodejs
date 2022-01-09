@@ -7,10 +7,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 
 
-// Controllers MVC
+// Controllers MVC / Routes
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const errorControllers = require('./controllers/error');
+const authRoutes = require('./routes/auth')
 
 //User
 
@@ -50,8 +51,8 @@ app.use((req, res, next) => {
 
 
 app.use('/admin', adminRoutes);
-
 app.use(shopRoutes);
+app.use(authRoutes);
 
 app.use(errorControllers.get404);
 
