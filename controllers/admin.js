@@ -8,7 +8,7 @@ exports.getAddProduct = (req, res, next) => {
         formsCSS: true,
         productCSS: true,
         editing: false,
-        isAutenticated: req.isLoggin
+        isAutenticated: req.session.isLoggedIn
     })
 }
 
@@ -39,7 +39,7 @@ exports.getEditProduct = (req, res, next) => {
     const editMode = req.query.edit;
     if (!editMode) {
         res.redirect('/', {
-            isAutenticated: req.isLoggin
+            isAutenticated: req.session.isLoggedIn
         })
     }
     const prodId = req.params.productId;
@@ -91,7 +91,7 @@ exports.getProducts = (req, res, next) => {
             prod: product,
             pageTitle: 'Admin Products',
             path: '/admin/products',
-            isAutenticated: req.isLoggin
+            isAutenticated: req.session.isLoggedIn
         });
     })
     .catch(err => {

@@ -2,6 +2,9 @@
 const path = require('path');
 const express = require('express');
 
+const session = require('express-session');
+const MongoDBStore = require('connect-mongodb-session')(session)
+
 //Mongoose
 
 const mongoose = require('mongoose');
@@ -20,10 +23,17 @@ const User = require('./models/user')
 
 // Parser
 const bodyParser = require('body-parser');
+//MongoDb Url
+
+const MONGODB_URL = 'mongodb+srv://rootjam:9Fbav1XY5amuwjEX@cluster0.haxu3.mongodb.net/shop';
 
 
 // App
 const app = express();
+const store = new MongoDBStore({
+    uri: MONGODB_URL,
+    collection: 'session'
+});
 
 // Teamplate engine
 app.set('view engine', 'pug');
@@ -35,11 +45,19 @@ app.use(bodyParser.urlencoded({extended: false}));
 //Static dirname for CSS, JS
 app.use(express.static(path.join(__dirname, 'public')))
 
-
-//Requests
+app.use(session({
+        secret: 'jamison', 
+        resave: false, 
+        saveUninitialized: false,
+        store: store
+    })
+);
 
 app.use((req, res, next) => {
-    User.findById('61d6fb0102222df21402ca82')
+    if (!req.session.user) {
+        return next();
+    }
+    User.findById(req.session.user._id)
         .then(user => {
             req.user = user;
             next();
@@ -50,6 +68,9 @@ app.use((req, res, next) => {
 });
 
 
+//Requests
+
+
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 app.use(authRoutes);
@@ -57,8 +78,7 @@ app.use(authRoutes);
 app.use(errorControllers.get404);
 
 mongoose
-    .connect(
-        'mongodb+srv://rootjam:9Fbav1XY5amuwjEX@cluster0.haxu3.mongodb.net/shop?retryWrites=true&w=majority')
+    .connect(MONGODB_URL)
     .then(result => {
         User.findOne()
             .then(user => {
