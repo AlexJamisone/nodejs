@@ -8,6 +8,14 @@ exports.getLogin = (req, res, next) => {
     });
 };
 
+exports.getSingup = (req, res, next) => {
+    res.render('auth/singup', {
+        path: '/singup',
+        pageTitle: 'Singup',
+        isAutenticated: false
+    });
+};
+
 exports.postLogin = (req, res, next) => {
     User.findById('61d6fb0102222df21402ca82')
         .then(user => {
@@ -21,6 +29,13 @@ exports.postLogin = (req, res, next) => {
         .catch(err => {
             console.log(err)
         });
+};
+
+exports.postSingup = (req, res, next) => {
+    const email = req.body.email;
+    const password = req.body.password;
+    const confirmPassword = req.body.confirmPassword;
+
 };
 
 exports.postLogout = (req, res, next) => {
