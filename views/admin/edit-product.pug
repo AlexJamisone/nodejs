@@ -20,7 +20,8 @@ block content
                         input.form__input#price(type="number", name="price", step="0.01", placeholder=" ", value=product.price)
                         label.form__label(for="price") Price
                     .form-control
-                        textarea#description(name="description", placeholder="Descripion" rows="5") #{product.description} 
+                        textarea.form__input#description(name="description", placeholder=" " rows="5") #{product.description} 
+                        label.form__label(for="description") Description
                     if editing
                         input.form__input(type="hidden", name="productId"  placeholder=" ", value=product._id)
                         button.btn(type="submit") Update Product
@@ -38,7 +39,8 @@ block content
                     input.form__input#price(type="number", name="price", placeholder=" ", step="0.01")
                     label.form__label(for="price") Price
                 .form-control
-                    textarea.form__textarea#description(name="description", placeholder="Description" rows="5") 
+                    textarea.form__input#description(name="description", placeholder=" " rows="5") 
+                    label.form__label(for="description") Description
                 if editing
                     input.form__input(type="hidden", placeholder=" ", name="productId" value=product._id)
                     button.btn(type="submit") Update Product
