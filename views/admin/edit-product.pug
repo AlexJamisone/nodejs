@@ -11,38 +11,36 @@ block content
         if editing
             form.product-form(action='/admin/edit-product', method="POST")
                 .form-control
-                    label(for="title") Title
-                    input#title(type="text", name="title", value=product.title)
+                    input.form__input#title(type="text", name="title", placeholder=" ", value=product.title)
+                    label.form__label(for="title") Title
                     .form-control
-                        label(for="imageUrl") Image Url
-                        input#imageUrl(type="text", name="imageUrl", value=product.imageUrl)
+                        input.form__input#imageUrl(type="text", name="imageUrl", placeholder=" ", value=product.imageUrl)
+                        label.form__label(for="imageUrl") Image Url
                     .form-control
-                        label(for="price") Price
-                        input#price(type="number", name="price", step="0.01", value=product.price)
+                        input.form__input#price(type="number", name="price", step="0.01", placeholder=" ", value=product.price)
+                        label.form__label(for="price") Price
                     .form-control
-                        label(for="description") Description
-                        textarea#description(name="description", rows="5") #{product.description} 
+                        textarea#description(name="description", placeholder="Descripion" rows="5") #{product.description} 
                     if editing
-                        input(type="hidden", name="productId" value=product._id)
+                        input.form__input(type="hidden", name="productId"  placeholder=" ", value=product._id)
                         button.btn(type="submit") Update Product
                     else 
                         button.btn(type="submit") Add Product
         else
             form.product-form(action='/admin/add-product', method="POST")
                 .form-control
-                    label(for="title") Title
-                    input#title(type="text", name="title")
+                    input.form__input#title(type="text", placeholder=" ", name="title")
+                    label.form__label(for="title") Title
                 .form-control
-                    label(for="imageUrl") Image Url
-                    input#imageUrl(type="text", name="imageUrl")
+                    input.form__input#imageUrl(type="text", placeholder=" ", name="imageUrl")
+                    label.form__label(for="imageUrl") Image Url
                 .form-control
-                    label(for="price") Price
-                    input#price(type="number", name="price", step="0.01")
+                    input.form__input#price(type="number", name="price", placeholder=" ", step="0.01")
+                    label.form__label(for="price") Price
                 .form-control
-                    label(for="description") Description
-                    textarea#description(name="description", rows="5") 
+                    textarea.form__textarea#description(name="description", placeholder="Description" rows="5") 
                 if editing
-                    input(type="hidden", name="productId" value=product._id)
+                    input.form__input(type="hidden", placeholder=" ", name="productId" value=product._id)
                     button.btn(type="submit") Update Product
                 else 
                     button.btn(type="submit") Add Product

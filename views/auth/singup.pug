@@ -8,12 +8,12 @@ block content
     main 
         form.login-form(action="/singup", method="POST")
             .form-control 
-                label(for="email") Email
-                input#email(type="email", name="email")
+                input.form__input#email(type="email", placeholder=" ", name="email")
+                label.form__label(for="email") Email
             .form-control 
-                label(for="password") Password
-                input#password(type="password", name="password") 
+                input.form__input#password(type="password", placeholder=" ", name="password") 
+                label.form__label(for="password") Password
             .form-control
-                label(for="confirmPassword") Confirm Password 
-                input#confirmPassword(type="password", name="confirmPassword")
+                input.form__input#confirmPassword(type="password", placeholder=" ", name="confirmPassword")
+                label.form__label(for="confirmPassword") Confirm Password 
             button.btn(type="submit") Signup

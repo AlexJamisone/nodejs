@@ -1,8 +1,23 @@
 .form-control {
   margin: 1rem 0;
+  position: relative;
 }
 
-.form-control label,
+.form-control label {
+	position: absolute;
+	top: .8rem;
+	left: 1rem;
+	cursor: text;
+	padding: 0 0.1rem;
+	background-color: #fff;
+
+	transition: top .2s ease-in,
+		left .2s ease-in,
+		font-size .2s ease-in;
+
+  
+}
+
 .form-control input,
 .form-control textarea {
   display: block;
@@ -15,9 +30,25 @@
   border: 1px solid #a1a1a1;
   font: inherit;
   border-radius: 2px;
+  padding: .7rem;
+
 }
 
 .form-control input:focus,
 .form-control textarea:focus {
   outline-color: #00695c;
+}
+
+.form__input:focus ~ .form__label,
+.form__input:not(:placeholder-shown).form__input:not(:focus) ~ .form__label {
+	top: -0.5rem;
+	font-size: .8rem;
+	left: .8rem;
+}
+
+.form__label:focus ~ .form__textarea,
+.form__label:not(:placeholder-shown).form__label:not(:focus) ~ .form__textarea {
+	top: -0.5rem;
+	font-size: .8rem;
+	left: .8rem;
 }
