@@ -11,7 +11,7 @@ router.get('/singup', authController.getSingup);
 
 router.post('/login', authController.postLogin);
 
-router.post('/signup', authController.postSingup);
+router.post('/singup', authController.postSingup);
 
 router.post('/logout', authController.postLogout);
 
