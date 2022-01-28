@@ -24,4 +24,5 @@ header.main-header
                 else 
                     li.main-header__item 
                         form(action="/logout", method="post") 
+                            input(type="hidden", name="_csrf" value=csurfToken)
                             button(type="submit") Logout

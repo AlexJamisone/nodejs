@@ -10,6 +10,7 @@ block content
     main
         if editing
             form.product-form(action='/admin/edit-product', method="POST")
+                input(type="hidden", name="_csrf" value=csurfToken)
                 .form-control
                     input.form__input#title(type="text", name="title", placeholder=" ", value=product.title)
                     label.form__label(for="title") Title
@@ -24,11 +25,14 @@ block content
                         label.form__label(for="description") Description
                     if editing
                         input.form__input(type="hidden", name="productId"  placeholder=" ", value=product._id)
+                        input(type="hidden", name="_csrf" value=csurfToken)
                         button.btn(type="submit") Update Product
                     else 
+                        input(type="hidden", name="_csrf" value=csurfToken)
                         button.btn(type="submit") Add Product
         else
             form.product-form(action='/admin/add-product', method="POST")
+                input(type="hidden", name="_csrf" value=csurfToken)
                 .form-control
                     input.form__input#title(type="text", placeholder=" ", name="title")
                     label.form__label(for="title") Title
@@ -43,6 +47,7 @@ block content
                     label.form__label(for="description") Description
                 if editing
                     input.form__input(type="hidden", placeholder=" ", name="productId" value=product._id)
+                    input(type="hidden", name="_csrf" value=csurfToken)
                     button.btn(type="submit") Update Product
                 else 
                     button.btn(type="submit") Add Product

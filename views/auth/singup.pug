@@ -6,6 +6,8 @@ block styles
 
 block content
     main 
+        if (errorMessage)
+            .user-message.user-message--error #{errorMessage} 
         form.login-form(action="/singup", method="POST")
             .form-control 
                 input.form__input#email(type="email", placeholder=" ", name="email")
@@ -16,4 +18,5 @@ block content
             .form-control
                 input.form__input#confirmPassword(type="password", placeholder=" ", name="confirmPassword")
                 label.form__label(for="confirmPassword") Confirm Password 
+            input(type="hidden", name="_csrf" value=csurfToken)
             button.btn(type="submit") Signup

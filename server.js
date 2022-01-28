@@ -4,6 +4,8 @@ const express = require('express');
 
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session)
+const csurf = require('csurf')
+const flash = require('connect-flash')
 
 //Mongoose
 
@@ -34,6 +36,7 @@ const store = new MongoDBStore({
     uri: MONGODB_URL,
     collection: 'session'
 });
+const csurfProt = csurf()
 
 // Teamplate engine
 app.set('view engine', 'pug');
@@ -53,6 +56,9 @@ app.use(session({
     })
 );
 
+app.use(csurfProt);
+app.use(flash())
+
 app.use((req, res, next) => {
     if (!req.session.user) {
         return next();
@@ -65,6 +71,12 @@ app.use((req, res, next) => {
         .catch(err => {
             console.log(err)
         });
+});
+
+app.use((req, res, next) => {
+    res.locals.isAutenticated = req.session.isLoggedIn;
+    res.locals.csurfToken = req.csrfToken();
+    next()
 });
 
 
