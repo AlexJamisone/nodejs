@@ -10,14 +10,10 @@ block content
     main
         if (errorMessage)
             .user-message.user-message--error #{errorMessage} 
-        form.login-form(action='/login', method="POST")
+        form.login-form(action='/reset', method="POST")
             .form-control
                 input.form__input#email(type="email", placeholder=" ", name="email")
                 label.form__label(for="email") E-mail
             .form-control
-                input.form__input#password(type="password", placeholder=" ", name="password")
-                label.form__label(for="password") Password
             input(type="hidden", name="_csrf" value=csurfToken)
-            button.btn(type="submit") Login
-            .centered 
-                a(href="/reset") Reset Password
+            button.btn(type="submit") Reset Password
