@@ -52,3 +52,7 @@
 	font-size: .8rem;
 	left: .8rem;
 }
+
+.form-control input.invalid {
+	border-color: red;
+}

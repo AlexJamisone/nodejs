@@ -10,12 +10,12 @@ block content
     main
         if (errorMessage)
             .user-message.user-message--error #{errorMessage} 
-        form.login-form(action='/login', method="POST")
+        form.login-form(action='/login', method="POST", novalidate)
             .form-control
-                input.form__input#email(type="email", placeholder=" ", name="email")
+                input.form__input#email(type="email", placeholder=" ", name="email", value=oldInput.email, class=validationErrors.find(e => e.param === 'email') ? 'invalid' : '')
                 label.form__label(for="email") E-mail
             .form-control
-                input.form__input#password(type="password", placeholder=" ", name="password")
+                input.form__input#password(type="password", placeholder=" ", name="password", value=oldInput.password, class=validationErrors.find(e => e.param === 'password') ? 'invalid' : '')
                 label.form__label(for="password") Password
             input(type="hidden", name="_csrf" value=csurfToken)
             button.btn(type="submit") Login

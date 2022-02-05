@@ -8,45 +8,94 @@ block styles
 
 block content
     main
-        if editing
-            form.product-form(action='/admin/edit-product', method="POST")
+        if (errorMessage)
+            .user-message.user-message--error #{errorMessage}
+        form.product-form(action='/admin/edit-product', method="POST")
+            if editing || hasError
                 input(type="hidden", name="_csrf" value=csurfToken)
                 .form-control
-                    input.form__input#title(type="text", name="title", placeholder=" ", value=product.title)
-                    label.form__label(for="title") Title
-                    .form-control
-                        input.form__input#imageUrl(type="text", name="imageUrl", placeholder=" ", value=product.imageUrl)
-                        label.form__label(for="imageUrl") Image Url
-                    .form-control
-                        input.form__input#price(type="number", name="price", step="0.01", placeholder=" ", value=product.price)
-                        label.form__label(for="price") Price
-                    .form-control
-                        textarea.form__input#description(name="description", placeholder=" " rows="5") #{product.description} 
-                        label.form__label(for="description") Description
-                    if editing
-                        input.form__input(type="hidden", name="productId"  placeholder=" ", value=product._id)
-                        button.btn(type="submit") Update Product
-                    else 
-                        input(type="hidden", name="_csrf" value=csurfToken)
-                        button.btn(type="submit") Add Product
-        else
-            form.product-form(action='/admin/add-product', method="POST")
-                input(type="hidden", name="_csrf" value=csurfToken)
-                .form-control
-                    input.form__input#title(type="text", placeholder=" ", name="title")
+                    input.form__input#title(
+                        type="text",
+                        name="title",
+                        placeholder=" ",
+                        value=product.title,
+                        class=validationErrors.find(e => e.param === 'title') ? 'invalid' : '')
                     label.form__label(for="title") Title
                 .form-control
-                    input.form__input#imageUrl(type="text", placeholder=" ", name="imageUrl")
+                    input.form__input#imageUrl(
+                        type="text",
+                        name="imageUrl",
+                        placeholder=" ",
+                        value=product.imageUrl,
+                        class=validationErrors.find(e => e.param === 'imageUrl') ? 'invalid' : '')
                     label.form__label(for="imageUrl") Image Url
                 .form-control
-                    input.form__input#price(type="number", name="price", placeholder=" ", step="0.01")
+                    input.form__input#price(
+                        type="number",
+                        name="price",
+                        step="0.01",
+                        placeholder=" ",
+                        value=product.price,
+                        class=validationErrors.find(e => e.param === 'price') ? 'invalid' : '')
                     label.form__label(for="price") Price
                 .form-control
-                    textarea.form__input#description(name="description", placeholder=" " rows="5") 
+                    textarea.form__input#description(
+                        name="description",    
+                        placeholder=" ", 
+                        rows="5",
+                        class=validationErrors.find(e => e.param === 'description') ? 'invalid' : '') #{product.description} 
                     label.form__label(for="description") Description
                 if editing
-                    input.form__input(type="hidden", placeholder=" ", name="productId" value=product._id)
-                    //- input(type="hidden", name="_csrf", value=csurfToken)
+                    input.form__input(
+                        type="hidden",
+                        name="productId",
+                        placeholder=" ",
+                        value=product._id)
                     button.btn(type="submit") Update Product
                 else 
                     button.btn(type="submit") Add Product
+            else
+                form.product-form(action='/admin/add-product', method="POST")
+                    input(
+                        type="hidden",
+                        name="_csrf", 
+                        value=csurfToken)
+                    .form-control
+                        input.form__input#title(
+                            type="text",
+                            placeholder=" ",
+                            name="title",
+                            class=validationErrors.find(e => e.param === 'title') ? 'invalid' : '')
+                        label.form__label(for="title") Title
+                    .form-control
+                        input.form__input#imageUrl(
+                            type="text",
+                            placeholder=" ",
+                            name="imageUrl",
+                            class=validationErrors.find(e => e.param === 'imageUrl') ? 'invalid' : '')
+                        label.form__label(for="imageUrl") Image Url
+                    .form-control
+                        input.form__input#price(
+                            type="number",
+                            name="price",
+                            placeholder=" ",
+                            step="0.01",
+                            class=validationErrors.find(e => e.param === 'price') ? 'invalid' : '')
+                        label.form__label(for="price") Price
+                    .form-control
+                        textarea.form__input#description(
+                            name="description",
+                            placeholder=" ",
+                            rows="5",
+                            class=validationErrors.find(e => e.param === 'description') ? 'invalid' : '') 
+                        label.form__label(for="description") Description
+                    if editing
+                        input.form__input(
+                            type="hidden",
+                            placeholder=" ",
+                            name="productId",
+                            value=product._id)
+                        //- input(type="hidden", name="_csrf", value=csurfToken)
+                        button.btn(type="submit") Update Product
+                    else 
+                        button.btn(type="submit") Add Product
