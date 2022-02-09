@@ -94,17 +94,22 @@ exports.postLogin = (req, res, next) => {
                 path: '/login',
                 pageTitle: 'LogIn',
                 errorMessage: 'Invalid email or password.',
-                oldInput: { email: email, password: password},
+                oldInput: { 
+                    email: email,
+                    password: password},
                 validationErrors: []
             });
         })
         .catch(err => {
             console.log(err)
+            res.redirect('/login')
         });
            
         })
     .catch(err => {
-        console.log(err)
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error)
     });
 };
 
@@ -148,7 +153,9 @@ exports.postSingup = (req, res, next) => {
                     
             });
         }).catch(err => {
-            console.log(err);
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error)
         });
 };
 
@@ -203,7 +210,9 @@ exports.postReset = (req, res, next) => {
                 })
             })
             .catch(err => {
-                console.log(err)
+                const error = new Error(err);
+                error.httpStatusCode = 500;
+                return next(error)
             });
     })
 };
@@ -229,7 +238,9 @@ exports.getNewPassword = (req, res, next) => {
         });
     })
     .catch(err => {
-        console.log(err)
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error)
     });
 
 };
@@ -256,7 +267,9 @@ exports.postNewPasswod = (req, res, next) => {
         res.redirect('/login');
     })
     .catch(err => {
-        console.log(err)
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error)
     });
 
 

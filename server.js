@@ -87,7 +87,15 @@ app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 app.use(authRoutes);
 
+// Error Req
+
+app.get('/500', errorControllers.get500)
 app.use(errorControllers.get404);
+app.use((error, req, res, next) => {
+    res.redirect('/500')
+});
+
+//App LISTEN localhost://8000
 
 mongoose
     .connect(MONGODB_URL)

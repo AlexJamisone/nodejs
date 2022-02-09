@@ -1,5 +1,6 @@
-const Product = require('../models/product')
-const { validationResult } = require('express-validator/check')
+const mongoose = require('mongoose');
+const Product = require('../models/product');
+const { validationResult } = require('express-validator/check');
 
 exports.getAddProduct = (req, res, next) => {
     if (!req.session.isLoggedIn) {
@@ -9,10 +10,11 @@ exports.getAddProduct = (req, res, next) => {
         {pageTitle: 'Add product',
         path: '/admin/add-product',
         activeAddProduct: true,
-        editing: false,
+        editing: null,
         isAutenticated: req.session.isLoggedIn,
         hasError: false,
-        errorMessage: null
+        errorMessage: null,
+        validationErrors: []
     })
 }
 
@@ -26,7 +28,7 @@ exports.postAddProduct = (req, res, next) => {
     if (!errors.isEmpty()) {
         return res.status(422).render('admin/edit-product', {
             pageTitle: "Add Product",
-            path: '/admin/edit-product',
+            path: '/admin/add-product',
             editing: false,
             hasError: true,
             product: {
@@ -35,7 +37,8 @@ exports.postAddProduct = (req, res, next) => {
                 description: description,
                 price: price,
             },
-            errorMessage: errors.array()[0].msg
+            errorMessage: errors.array()[0].msg,
+            validationErrors: errors.array()
         })
     }
 
@@ -53,16 +56,31 @@ exports.postAddProduct = (req, res, next) => {
         res.redirect('/admin/products')
     })
     .catch(err => {
-        console.log(err);
+        // res.redirect('/500')
+        // return res.status(500).render('admin/edit-product', {
+        //     pageTitle: "Add Product",
+        //     path: '/admin/add-product',
+        //     editing: false,
+        //     hasError: true,
+        //     product: {
+        //         title: title,
+        //         imageUrl: imageUrl,
+        //         description: description,
+        //         price: price,
+        //     },
+        //     errorMessage: 'Database operation faild, please try again',
+        //     validationErrors: []
+        // })
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error)
     });
 }
 
 exports.getEditProduct = (req, res, next) => {
     const editMode = req.query.edit;
     if (!editMode) {
-        res.redirect('/', {
-            isAutenticated: req.session.isLoggedIn
-        })
+        res.redirect('/')
     }
     const prodId = req.params.productId;
     Product.findById(prodId)
@@ -81,7 +99,9 @@ exports.getEditProduct = (req, res, next) => {
             })
         })
         .catch(err => {
-            console.log(err)
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error)
         });
 };
 
@@ -127,7 +147,9 @@ exports.postEditProduct = (req, res, next) => {
             })
         })
         .catch(err => {
-            console.log(err)
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error)
         })
 };
 
@@ -144,7 +166,9 @@ exports.getProducts = (req, res, next) => {
         });
     })
     .catch(err => {
-        console.log(err)
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error)
     });
 };
 
@@ -155,6 +179,8 @@ exports.postDeletProduct = (req, res, next) => {
             res.redirect('/admin/products')
         })
         .catch(err => {
-            console.log(err)
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error)
         });
 }; 
