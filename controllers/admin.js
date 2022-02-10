@@ -20,9 +20,26 @@ exports.getAddProduct = (req, res, next) => {
 
 exports.postAddProduct = (req, res, next) => {
     const title = req.body.title;
-    const imageUrl = req.body.imageUrl;
+    const image = req.file;
     const description = req.body.description;
     const price = req.body.price;
+    console.log(image)
+    if (!image) {
+        return res.status(422).render('admin/edit-product', {
+            pageTitle: "Add Product",
+            path: '/admin/add-product',
+            editing: false,
+            hasError: true,
+            product: {
+                title: title,
+                description: description,
+                price: price,
+            },
+            errorMessage: 'Attached file is not an image',
+            validationErrors: []
+        })
+    }
+
     const errors = validationResult(req)
 
     if (!errors.isEmpty()) {
@@ -33,7 +50,6 @@ exports.postAddProduct = (req, res, next) => {
             hasError: true,
             product: {
                 title: title,
-                imageUrl: imageUrl,
                 description: description,
                 price: price,
             },
@@ -41,6 +57,8 @@ exports.postAddProduct = (req, res, next) => {
             validationErrors: errors.array()
         })
     }
+
+    const imageUrl = image.path
 
     const product = new Product({
         title: title,
@@ -108,7 +126,7 @@ exports.getEditProduct = (req, res, next) => {
 exports.postEditProduct = (req, res, next) => {
     const prodId = req.body.productId;
     const updateTitle = req.body.title;
-    const updateImg = req.body.imageUrl;
+    const image = req.file;
     const updatePrice = req.body.price;
     const updateDescription = req.body.description;
     const errors = validationResult(req)
@@ -121,7 +139,6 @@ exports.postEditProduct = (req, res, next) => {
             hasError: true,
             product: {
                 title: updateTitle,
-                imageUrl: updateImg,
                 price: updatePrice,
                 description: updateDescription,
                 _id: prodId
@@ -136,10 +153,12 @@ exports.postEditProduct = (req, res, next) => {
             if (product.userId.toString() !== req.user._id.toString()) {
                 return res.redirect('/')
             }
-            product.title = updateTitle,
-            product.price = updatePrice,
-            product.description = updateDescription,
-            product.imageUrl = updateImg
+            product.title = updateTitle;
+            product.price = updatePrice;
+            product.description = updateDescription;
+            if (image) {
+                product.imageUrl = image.path;
+            }
             return product.save()
             .then(result => {
                 console.log('Update Product')

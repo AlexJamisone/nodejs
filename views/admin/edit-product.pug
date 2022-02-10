@@ -11,7 +11,7 @@ block content
         if (errorMessage)
             .user-message.user-message--error #{errorMessage}
         if editing
-            form.product-form(action='/admin/edit-product', method="POST")
+            form.product-form(action='/admin/edit-product', method="POST", enctype="multipart/form-data")
                     input(type="hidden", name="_csrf" value=csurfToken)
                     .form-control
                         input.form__input#title(
@@ -21,14 +21,19 @@ block content
                             value=product.title,
                             class=validationErrors.find(e => e.param === 'title') ? 'invalid' : '')
                         label.form__label(for="title") Title
+                    //- .form-control
+                    //-     input.form__input#imageUrl(
+                    //-         type="text",
+                    //-         name="imageUrl",
+                    //-         placeholder=" ",
+                    //-         value=product.imageUrl,
+                    //-         class=validationErrors.find(e => e.param === 'imageUrl') ? 'invalid' : '')
                     .form-control
-                        input.form__input#imageUrl(
-                            type="text",
-                            name="imageUrl",
-                            placeholder=" ",
-                            value=product.imageUrl,
-                            class=validationErrors.find(e => e.param === 'imageUrl') ? 'invalid' : '')
-                        label.form__label(for="imageUrl") Image Url
+                        input.form__input#image(
+                            type="file",
+                            name="image",
+                            placeholder=" ",)
+                        label.form__label(for="image") Image
                     .form-control
                         input.form__input#price(
                             type="number",
@@ -55,7 +60,7 @@ block content
                     else 
                         button.btn(type="submit") Add Product
         if !editing
-            form.product-form(action='/admin/add-product', method="POST")
+            form.product-form(action='/admin/add-product', method="POST", enctype="multipart/form-data")
                 input(
                     type="hidden",
                     name="_csrf", 
@@ -67,13 +72,20 @@ block content
                         name="title",
                         class=validationErrors.find(e => e.param === 'title') ? 'invalid' : '')
                     label.form__label(for="title") Title
+                //- .form-control
+                //-     input.form__input#imageUrl(
+                //-         type="text",
+                //-         placeholder=" ",
+                //-         name="imageUrl",
+                //-         class=validationErrors.find(e => e.param === 'imageUrl') ? 'invalid' : '')
+                //-     label.form__label(for="imageUrl") Image Url
                 .form-control
-                    input.form__input#imageUrl(
-                        type="text",
+                    input.form__input#image(
+                        type="file",
                         placeholder=" ",
-                        name="imageUrl",
-                        class=validationErrors.find(e => e.param === 'imageUrl') ? 'invalid' : '')
-                    label.form__label(for="imageUrl") Image Url
+                        name="image",
+                        )
+                    label.form__label(for="image") Image
                 .form-control
                     input.form__input#price(
                         type="number",
