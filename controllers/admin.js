@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const fileHelper = require('../util/file')
 const Product = require('../models/product');
 const { validationResult } = require('express-validator/check');
 
@@ -157,6 +158,7 @@ exports.postEditProduct = (req, res, next) => {
             product.price = updatePrice;
             product.description = updateDescription;
             if (image) {
+                fileHelper.deleteFile(product.imageUrl)
                 product.imageUrl = image.path;
             }
             return product.save()
@@ -193,7 +195,14 @@ exports.getProducts = (req, res, next) => {
 
 exports.postDeletProduct = (req, res, next) => {
    const prodId = req.body.productId;
-   Product.deleteOne({_id: prodId, userId: req.user._id})
+   Product.findById(prodId)
+        .then(product =>{
+            if (!product) {
+                return next(new Error('Product Not Find!'))
+            }
+            fileHelper.deleteFile(product.imageUrl)
+            return Product.deleteOne({_id: prodId, userId: req.user._id})
+        })
         .then(() => {
             res.redirect('/admin/products')
         })
@@ -202,4 +211,5 @@ exports.postDeletProduct = (req, res, next) => {
             error.httpStatusCode = 500;
             return next(error)
         });
+        
 }; 
