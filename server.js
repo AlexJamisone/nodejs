@@ -38,13 +38,12 @@ const store = new MongoDBStore({
     collection: 'session'
 });
 const csurfProt = csurf()
-const today = new Date()
 const fileStorage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, 'images');
     },
-    filename: (req, file, cb) => {
-        cb(null, file.fieldname + "-" + file.originalname);
+    filename: function(req, file, cb) {
+        cb(null, new Date().toISOString().replace(/:/gm, '-') + '-' + file.originalname);
     }
 });
 
