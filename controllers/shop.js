@@ -6,22 +6,38 @@ const PDFDocument = require('pdfkit')
 const Product = require('../models/product')
 const Order = require('../models/order')
 
+const ITEMS_PER_PAGE = 1;
+
 exports.getProduct = (req, res, next) => {
-    Product.find()
+
+    // UPG TO FUN
+    const page = +req.query.page || 1;
+    let totalItems;
+    
+    Product.find().countDocuments()
+        .then(numProducts => {
+            totalItems = numProducts
+            return Product
+                .find()
+                .skip((page - 1) * ITEMS_PER_PAGE)
+                .limit(ITEMS_PER_PAGE)
+        })
         .then(product => {
-            console.log(product)
             res.render('shop/product-list', {
                 prod: product,
-                pageTitle: 'All Products',
+                pageTitle: 'All Product',
                 path: '/products',
-                hasProduct: product.length > 0,
-                activeShop: true,
-                productCSS: true,
+                currentPage: page,
+                hasNextPage: ITEMS_PER_PAGE * page < totalItems,
+                hasPreviosPage: page > 1,
+                nextPage: page + 1,
+                previosPage: page - 1,
+                lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE)
             });
         })
         .catch(err => {
             console.log(err)
-        });
+        })
     
 }
 
@@ -40,12 +56,29 @@ exports.getProducts = (req, res, next) => {
 };
 
 exports.getIndex = (req, res, next) => {
-    Product.find()
+    // UPG TO FUN
+    const page = +req.query.page || 1;
+    let totalItems;
+    
+    Product.find().countDocuments()
+        .then(numProducts => {
+            totalItems = numProducts
+            return Product
+                .find()
+                .skip((page - 1) * ITEMS_PER_PAGE)
+                .limit(ITEMS_PER_PAGE)
+        })
         .then(product => {
             res.render('shop/index', {
                 prod: product,
                 pageTitle: 'Shop',
                 path: '/',
+                currentPage: page,
+                hasNextPage: ITEMS_PER_PAGE * page < totalItems,
+                hasPreviosPage: page > 1,
+                nextPage: page + 1,
+                previosPage: page - 1,
+                lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE)
             });
         })
         .catch(err => {
