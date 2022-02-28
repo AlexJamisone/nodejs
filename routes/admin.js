@@ -50,6 +50,10 @@ router.post('/edit-product', [
 
 ], isAuth, adminControlls.postEditProduct)
 
-router.post('/delet-product', isAuth, adminControlls.postDeletProduct)
+router.delete('/product/:prductId', isAuth, adminControlls.deleteProduct)
 
 module.exports = router;
+
+
+
+
