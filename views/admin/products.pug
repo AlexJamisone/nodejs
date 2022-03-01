@@ -20,7 +20,7 @@ block content
                             a.btn(href=`/admin/edit-product/` + product._id + `?edit=true` )  Edit
                             input(type="hidden", name="productId" value=product._id)
                             input(type="hidden", name="_csrf" value=csurfToken)
-                            button.btn(type="button", onclick="deletProduct(this)") Delet 
+                            button.btn(type="button", onclick="deleteProduct(this)") Delet 
         else
             h1 No Product
     script(src="/js/admin.js")

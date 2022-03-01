@@ -204,14 +204,11 @@ exports.deleteProduct = (req, res, next) => {
             return Product.deleteOne({_id: prodId, userId: req.user._id})
         })
         .then(() => {
-            res.status(200).json({
-                message: 'Success'
-            })
+            console.log('Destroy Product')
+            res.status(200).json({message: 'Succsess'});
         })
         .catch(err => {
-            res.status(500).json({
-                message: 'Deleting product failed.'
-            })
+            res.status(500).json({message: 'Deleting product failed.'});
         });
         
 }; 
